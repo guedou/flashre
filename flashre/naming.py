@@ -91,8 +91,7 @@ class NamingError(object):
                 continue
             faddresses.add(fname_addr[0][1])
 
-        if faddresses:
-            yield real_fname.strip(), faddresses
+        return real_fname.strip(), faddresses
 
 
 # Naming strategies
@@ -138,10 +137,9 @@ def naming_command(args):
         instr_offsets = strategy.lookup(rfb, offset)
 
         # Gather candidates
-        # GV: simply return the candidates ?
-        for fname, addresses in strategy.check(rfb, string, instr_offsets):
-            candidates[fname] = candidates.get(fname, set())
-            candidates[fname].update(addresses)
+        fname, addresses = strategy.check(rfb, string, instr_offsets)
+        candidates[fname] = candidates.get(fname, set())
+        candidates[fname].update(addresses)
 
     # Display the the results as r2 commands
     print_r2_definitions(candidates)
