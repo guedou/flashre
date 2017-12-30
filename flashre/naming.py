@@ -4,11 +4,12 @@
 Functions naming strategies
 """
 
+
 import json
 import re
 
 from flashre.binaries_helpers import ReverseFlashairBinary
-from flashre.utils import r2_search_memory, is_camelcase_str
+from flashre.utils import r2_search_memory, is_camelcase_str, args_detect_int
 
 
 def print_r2_definitions(candidates):
@@ -230,13 +231,10 @@ def naming_register(parser):
     Register the naming sub-command.
     """
 
-    def _detect_int(i):
-        return int(i, 0)
-
     new_parser = parser.add_parser("naming", help="Auto-naming functions")
     new_parser.add_argument("--strategy", choices=NAMING_STRATEGIES.keys(),
                             default="error", help="Naming strategies")
-    new_parser.add_argument("--offset", type=_detect_int, default=0,
+    new_parser.add_argument("--offset", type=args_detect_int, default=0,
                             help="map file at given address")
     new_parser.add_argument("binary_filename", help="flashair binary filename")
     new_parser.set_defaults(func=naming_command)

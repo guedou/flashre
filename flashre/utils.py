@@ -142,3 +142,7 @@ def is_camelcase_str(string):
         return False
 
     return False
+
+def args_detect_int(i):
+    """Simple trick to specify hex integer to argparse."""
+    return int(i, 0)

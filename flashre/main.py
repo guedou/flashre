@@ -8,6 +8,7 @@ The main glue
 import argparse
 
 from flashre.naming import naming_register, naming_command
+from flashre.hints import hints_register, hints_command
 
 
 if __name__ == "__main__":
@@ -17,6 +18,7 @@ if __name__ == "__main__":
 
     # Register sub-commands
     naming_register(subparser)
+    hints_register(subparser)
     args = parser.parse_args()
 
     # Call the sub-command
