@@ -41,3 +41,9 @@ class ReverseFlashairBinary(object):
         get_prologues wrapper
         """
         return get_prologues(self.r2p)
+
+    def nearest_prologue(self, address):
+        prologues = sorted([(address-p, p) for p in self.prologues() if p < address])
+        if len(prologues):
+            return prologues[0][1]
+        return prologues
