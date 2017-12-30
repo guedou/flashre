@@ -160,8 +160,8 @@ class NamingError(Naming):
         # Get the fonction prefix, aka possibe category
         prefix = cls.extract_prefix(string)
 
-        # Disassemble three instructions and look for the expected sequence
-        instructions = json.loads(rfb.r2p.cmd("pdj 3 @ 0x%x" % offset))
+        # Disassemble two instructions and look for the expected sequence
+        instructions = json.loads(rfb.r2p.cmd("pdj 2 @ 0x%x" % offset))
 
         if not instructions[1]["opcode"].startswith("MOVU R2"):
             return ""
@@ -223,7 +223,6 @@ class NamingCamelCase(Naming):
 NAMING_STRATEGIES = dict()
 NAMING_STRATEGIES["error"] = NamingError
 NAMING_STRATEGIES["camelcase"] = NamingCamelCase
-#naming_strategies["printf"] = naming_printf
 
 
 def naming_register(parser):
