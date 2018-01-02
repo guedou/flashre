@@ -52,6 +52,66 @@ def dump_functions(rfb, address):
 
 def reverse_callgraph(rfb, address):
     """
+    List functions that are using this adress.
+
+    Due to r2m2 performance, BSR are searched using their 12 and 24 bits
+    patterns. The corresponding immediates are decoded directly without the
+    disassembler.
+
+    Note: this function does not detect JMP based calls that occur sometimes.
+    """
+
+    callers = list()
+
+    # Look for the 12 bits variants
+    for hits in rfb.r2p.cmdj("/xj 01b0:01F0"):  # GV: cache in rfb ?
+        # Discard non even offsets
+        if hits["offset"] % 2:
+            continue
+
+        # Discard offsets that cannot be encoded with 12 bits
+        if (address - hits["offset"]) > 0xFFF:
+            continue
+        imm = (address - hits["offset"]) & 0xFFF
+
+        # Check the encoded immediate
+        value = int(hits["data"], 16)
+        if (((value & 0xF) << 8) + (value >>8)-1) != imm:
+            continue
+
+        for instr in rfb.r2p.cmdj("pdj 1 @ %s" %  hits["offset"]):
+            if instr["jump"] == address:
+                callers.append(rfb.nearest_prologue(instr["offset"]))
+
+    # Look for the 24 bits variant
+    for hits in rfb.r2p.cmdj("/xj 09d80000:0ff80000"):  # GV: cache in rfb ?
+        # Discard non even offsets
+        if hits["offset"] % 2:
+            continue
+
+        # Discard offsets that cannot be encoded with 24 bits
+        if (address - hits["offset"]) > 0xFFFFFF:
+            continue
+        imm = (address - hits["offset"]) & 0xFFFFFF
+
+        # Check the encoded immediate
+        value = int(hits["data"], 16)
+        tmp = (value & 0xFF) << 16
+        tmp += ((value & 0xFF00)>> 8) << 8
+        inverted_bytes = ((value >> 24) & 0xFF) + ((value >> 8) & 0xFF00)
+        tmp += ((inverted_bytes >> 4) & 0x7F) << 1
+
+        if tmp != imm:
+            continue
+
+        for instr in rfb.r2p.cmdj("pdj 1 @ %s" %  hits["offset"]):
+            if instr["jump"] == address:
+                callers.append(rfb.nearest_prologue(instr["offset"]))
+
+    return callers
+
+def _reverse_callgraph(rfb, address):
+    """
     Attempt to find functions calling address
 
     Note: it is currently too slow for most use cases.
