@@ -24,3 +24,15 @@ objdump output.
 grep mov dump.binary.objdump > movs.txt
 python -m flashre.main hints ~/Projects/flashre/dumps/w-03/dump_w03-hw.bin movs.txt --offset 0xC00000
 ```
+
+## Update
+
+Verify an update checksum:
+```
+python -m flashre.main update update.bin
+```
+
+Build a fake update:
+```
+python -m flashre.main update fake.bin --fake <(echo ABC)
+```
