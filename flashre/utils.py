@@ -94,6 +94,11 @@ def get_prologues(r2p):
     #   f06f           ADD SP, -4
     ret += [p["offset"] for p in r2p.cmdj("/xj 1a70.06f")]
 
+    # Type #4 example:
+    #   1a70           LDC R0, LP
+    #   f0cfd8ff       ADD3 SP, SP, -40
+    ret += [p["offset"] for p in r2p.cmdj("/xj 1a70f0cf")]
+
     return ret
 
 
