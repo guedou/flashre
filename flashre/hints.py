@@ -29,8 +29,12 @@ def load_hints(rfb, filename):
     # Build the hints dictionary
     hints = dict()
     for line in open(filename):
-        addr = int(line.split(':')[0], 16)
-        str_addr = int(line.split(',')[1], 16)
+        try:
+            addr = int(line.split(':')[0], 16)
+            print addr
+            str_addr = int(line.split(',')[1], 16)
+        except (ValueError, IndexError):
+            return None
 
         if addr not in hints:
             value = strings_dict.get(str_addr, None)
