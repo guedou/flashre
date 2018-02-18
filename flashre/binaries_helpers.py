@@ -17,7 +17,7 @@ class ReverseFlashairBinary(object):
 
     def __init__(self, filename, offset, r2_options=None):
         """
-        Initiatlize the object
+        Initialize the object
         """
 
         # Remember the file offset
