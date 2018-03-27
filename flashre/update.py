@@ -104,6 +104,8 @@ def update_register(parser):
     new_parser.add_argument("--check", action='store_true', default=True,
                             help="display and check the header")
     new_parser.add_argument("--fake", help="build a fake update using the data from this file")
+    new_parser.add_argument("--type", help="fake update type", default="BOOT",
+                            choices=UPDATE_HEADER_TYPES)
     new_parser.add_argument("update_filename", help="FlashAir update filename")
     new_parser.set_defaults(func=update_command)
 
@@ -114,7 +116,7 @@ def update_command(args):
     """
 
     # Build a fake update
-    if args.fake and fake_update(args.update_filename, args.fake) is None:
+    if args.fake and fake_update(args.update_filename, args.fake, header_type=args.type) is None:
         return
 
     # Verify the checksum an display the header
