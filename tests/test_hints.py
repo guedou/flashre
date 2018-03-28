@@ -4,11 +4,10 @@
 Test hints.py
 """
 
+
 from StringIO import StringIO
 
 import mock
-
-from flashre.binaries_helpers import ReverseFlashairBinary
 
 
 class TestHints(object):
@@ -19,6 +18,7 @@ class TestHints(object):
         """
   
         from flashre.hints import load_hints
+        from flashre.binaries_helpers import ReverseFlashairBinary
 
         # Build a fake ReverseFlashairBinary object
         # Note: get_r2pipe() could be mocked too!
