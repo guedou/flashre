@@ -7,7 +7,9 @@ The main glue
 
 import argparse
 
+from flashre.dump import dump_register, dump_command
 from flashre.emulate import emulate_register, emulate_command
+from flashre.flags import flags_register, flags_command
 from flashre.hints import hints_register, hints_command
 from flashre.naming import naming_register, naming_command
 from flashre.telnet import telnet_register, telnet_command
@@ -21,7 +23,9 @@ if __name__ == "__main__":
     subparser = parser.add_subparsers()
 
     # Register sub-commands
+    dump_register(subparser)
     emulate_register(subparser)
+    flags_register(subparser)
     hints_register(subparser)
     naming_register(subparser)
     telnet_register(subparser)

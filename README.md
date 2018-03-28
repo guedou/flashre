@@ -46,3 +46,10 @@ Build a fake update:
 ```
 python -m flashre.main update fake.bin --fake <(echo ABC)
 ```
+
+## Dump
+
+Converting a dump made using telnet:
+```
+python -m flashre dump --convert ../dumps/w-03/logs/dump_w03.0x000000-0x200000.v30001.txt
+```
