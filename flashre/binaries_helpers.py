@@ -15,7 +15,7 @@ class ReverseFlashairBinary(object):
     Frequent operations on the flashair binary
     """
 
-    def __init__(self, filename, offset, r2_options=None):
+    def __init__(self, filename, offset=0, r2_options=None):
         """
         Initialize the object
         """
