@@ -6,6 +6,7 @@ Display strings used in functions
 
 
 import string
+import json
 
 from flashre.binaries_helpers import ReverseFlashairBinary
 from flashre.utils import args_detect_int
@@ -43,6 +44,19 @@ def load_hints(rfb, filename):
     return hints
 
 
+def reverse_hints(rfb, address):
+    """
+    Identify strings used in functions
+    """
+    rfb.r2p.cmd("s %s; af " % address)
+    instructions = json.loads(rfb.r2p.cmd("pdj $FI"))
+
+    for instr in instructions:
+        if instr["opcode"].startswith("MOVU"):
+            str_addr = instr["opcode"].split(",")[1]
+            print address, rfb.r2p.cmd("ps @ %s" % str_addr)
+
+
 def hints_register(parser):
     """
     Register the hints sub-command.
@@ -51,8 +65,9 @@ def hints_register(parser):
     new_parser = parser.add_parser("hints", help="Identify strings used in functions")
     new_parser.add_argument("--offset", type=args_detect_int, default=0,
                             help="map file at given address")
+    new_parser.add_argument("--reverse", action='store_true', default=False, help="find strings")
     new_parser.add_argument("binary_filename", help="flashair binary filename")
-    new_parser.add_argument("movs_filename", help="objdump mov* output filename")
+    new_parser.add_argument("movs_filename", help="objdump mov* output OR function addresses filename")
     new_parser.set_defaults(func=hints_command)
 
 
@@ -63,6 +78,14 @@ def hints_command(args):
 
     # Initialize object
     rfb = ReverseFlashairBinary(args.binary_filename, args.offset)
+
+
+    # Display strings used in functions
+    if args.reverse:
+        for address in open(args.movs_filename):
+            reverse_hints(rfb, address.strip())
+            print "===="
+        return
 
     # Load hints and prologues
     hints = load_hints(rfb, args.movs_filename)
