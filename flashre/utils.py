@@ -137,8 +137,8 @@ def is_camelcase_str(string):
 
     # Check if they are followed by lowercase ones
     try:
-        for u in uppers:
-            after_char = string[u[1]+1]
+        for up_char in uppers:
+            after_char = string[up_char[1]+1]
             if not after_char.islower():
                 return False
     except IndexError:
