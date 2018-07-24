@@ -1,7 +1,7 @@
 # Copyright (C) 2016 Guillaume Valadon <guillaume@valadon.net>
 
 """
-Connect to a FlashAir using telnet
+Connect to a FlashAir using Telnet
 """
 
 
@@ -11,7 +11,7 @@ import telnetlib
 
 class FlashAirTelnet(object):
     """
-    Custom Toshiba FlashAir telnet client.
+    Custom Toshiba FlashAir Telnet client.
     """
 
     def __init__(self, host):
@@ -24,7 +24,8 @@ class FlashAirTelnet(object):
         """
         Write raw data to the socket, as the regular write() doubles IAC
         characters.
-        From http://stackoverflow.com/questions/12421799/how-to-disable-telnet-echo-in-python-telnetlib
+        From
+        http://stackoverflow.com/questions/12421799/how-to-disable-telnet-echo-in-python-telnetlib # noqa: E501
         """
 
         t_sck = self.tlnt.get_socket()
@@ -77,7 +78,7 @@ class FlashAirTelnet(object):
         Mimic an interctive session.
         """
 
-        # Get the telnet prompt
+        # Get the Telnet prompt
         prompt = self.wait_for_prompt()
         sys.stdout.write("%s" % prompt)
 
@@ -104,7 +105,7 @@ class FlashAirTelnet(object):
 
     def close(self):
         """
-        Close the telnet session.
+        Close the Telnet session.
         """
 
         return self.tlnt.close()
@@ -114,17 +115,19 @@ def telnet_register(parser):
     """
     Register the 'telnet' sub-command.
     """
-    new_parser = parser.add_parser("telnet", help="Connect to a FlashAir card using telnet")
+    new_parser = parser.add_parser("telnet", help="Connect to a FlashAir \
+                                   card using Telnet")
     new_parser.add_argument("-c", "--command", dest="command",
                             help="send a single command.")
-    new_parser.add_argument("-t", "--target", dest="target", default="192.168.0.1",
+    new_parser.add_argument("-t", "--target", dest="target",
+                            default="192.168.0.1",
                             help="address or name of the FlashAir")
     new_parser.set_defaults(func=telnet_command)
 
 
 def telnet_command(args):
     """
-    Interact with the card using telnet
+    Interact with the card using Telnet
     """
 
     # Start the FlashAir client
