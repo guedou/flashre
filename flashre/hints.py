@@ -26,11 +26,11 @@ def load_hints(rfb, base_address, keyword):
             movu_pattern = "%.2xd.%.2x%.2x" % offsets
             for addr in r2_search_memory(rfb.r2p, movu_pattern):
                 # TODO: add when radare2 is fixed
-                #binary = rfb.r2p.cmd("p8 4 @ %d" % (addr + base_address))
-                #mode = rfb.machine.dis_engine().attrib
-                #instr = rfb.mn.dis(binary.decode("hex"), mode)
-                #if not str(instr).startswith("MOVU"):
-                #    continue
+                binary = rfb.r2p.cmd("p8 4 @ %d" % addr)
+                mode = rfb.machine.dis_engine().attrib
+                instr = rfb.mn.dis(binary.decode("hex"), mode)
+                if not str(instr).startswith("MOVU"):
+                    continue
                 hints[addr] = _str
     return hints
 

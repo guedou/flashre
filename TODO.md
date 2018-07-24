@@ -6,9 +6,6 @@
 - test requirements.txt
 - test "flashre emulate strlen.bin"
 - use a cache per binary
-- fix offset related issues in cache files
-  - test with radare2 2.6.0
-  - flashre hints; rm get_prologues.cache: flashare hints -m 0xC00000
 
 ## Important
 

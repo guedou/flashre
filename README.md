@@ -136,7 +136,7 @@ $ flashre xref --offset 0xC00000 dump.bin --reverse 0xc67c4a
 ['0xc6786a']
 ```
 
-## update
+### update
 
 Verify an update checksum:
 ```
