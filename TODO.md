@@ -4,6 +4,10 @@
 
 - auto detect sub-commands
 - test requirements.txt
+- use a cache per binary
+- fix offset related issues in cache files
+  - test with radare2 2.6.0
+  - flashre hints; rm get_prologues.cache: flashare hints -m 0xC00000
 
 ## Important
 
@@ -12,16 +16,14 @@
 
 ## misc ...
 
-- fix offset related issues in cache files
 - add short CLI arguments
 - look for movs using r2 '/x' like done in reverse xref
 - use the `nearest_prologues()` function
 - implement unit tests
 - implement a cache in .config/flashre/SHA256/
   interact with a global config: binary filename, flush, ...
-- auto load sub commands
-- add per file license
 - telnet: port the watchdog for full memory dumps
+  => use radare2 2.6.0
 
 ## radare2
 

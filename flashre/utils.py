@@ -45,7 +45,7 @@ def get_r2pipe(filename, offset, options=None):
     # Map the binary at a given location
     default_options += ["-m", hex(offset)]
 
-    # Decrease r2 verbority
+    # Decrease r2 verbosity
     default_options += ["-e", "bin.verbose=false"]
 
     # Add user specified options
@@ -114,7 +114,6 @@ def get_calls(r2p):
     bsr2_pattern = "01b0:0ef0"  # mask needed due to the instruction encoding
     ret = r2_search_memory(r2p, bsr2_pattern)
 
-
     # Major Opcode #13 - 4 bytes BSR example:
     # Example:
     #   99dc5506       BSR 0x78178
@@ -132,7 +131,6 @@ def is_camelcase_str(string):
         return False
 
     # Look for two uppercase characters
-    #uppers = filter(lambda c: c[0].isupper(), zip(string, xrange(len(string))))
     uppers = [c for c in zip(string, xrange(len(string))) if c[0].isupper()]
     if not uppers and len(string) < 2:
         return False
@@ -147,6 +145,7 @@ def is_camelcase_str(string):
         return False
 
     return False
+
 
 def args_detect_int(i):
     """Simple trick to specify hex integer to argparse."""

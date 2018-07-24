@@ -43,7 +43,12 @@ class ReverseFlashairBinary(object):
         return get_prologues(self.r2p)
 
     def nearest_prologue(self, address):
-        prologues = sorted([(address-p, p) for p in self.prologues() if p < address])
+        """
+        find the nearest function prologue
+        """
+
+        tmp = [(address-p, p) for p in self.prologues() if p < address]
+        prologues = sorted(tmp)
         if len(prologues):
             return prologues[0][1]
         return prologues

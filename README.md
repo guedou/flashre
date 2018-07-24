@@ -4,6 +4,7 @@ This repository contains a set of tools that ease reversing the Toshiba FlashAir
 cards:
 - telnet: interact with the card
 - dump: get text dumps and convert them to binary
+- hints: identify functions that manipulates specific strings
 
 ## Commands Examples
 
@@ -49,6 +50,38 @@ Convert a text dump to a binary
 flashre dump --convert dump.log > dump.bin
 ```
 
+### hints
+
+The goal is to understand functions purposes based on the strings that they
+manipulate. Somehow, it is a generic version of the auto-naming strategies.
+
+```
+flashre hints dump.bin --offset 0xC00000 telnet
+0xc11a68 0xc11aa2 SD_WLAN/WELCOME.HTM
+0xc11a68 0xc11aae /SD_WLAN/WELCOME.HTM
+0xc11a68 0xc11abe 1:/WELCOME.HTM
+0xc11a68 0xc11ac8 1:/WELCOME.HTM
+====
+0xc67c4a 0xc67c6a Welcome to FlashAir\r\n
+0xc67c4a 0xc67cac Welcome to FlashAir\r\n
+```
+
+The --reverse argument outputs strings manipulated by functions:
+```
+flashre hints ../dumps/w-03/dump_w03-hw.bin  --offset 0xc00000 --reverse <(echo 0xc67c4a)
+0xc67c4a  0xccf586 ESC R4161 built 16:20:27, Oct  6 2014
+0xc67c4a  0xce4fec Welcome to FlashAir\x0d
+0xc67c4a  0xce5172 [TEL] (error) %s:%d
+0xc67c4a  0xce5161 SendLoginMessage
+0xc67c4a  0xce5187 cannot get memory(%d)
+0xc67c4a  0xce519e %s%s%s
+0xc67c4a  0xce4fec Welcome to FlashAir\x0d
+0xc67c4a  0xccf586 ESC R4161 built 16:20:27, Oct  6 2014
+0xc67c4a  0xce51a5 [TEL] (error) %s:%d
+0xc67c4a  0xce5161 SendLoginMessage
+0xc67c4a  0xce51ba send(%d)
+```
+
 ## Naming strategies
 
 In practice, the "error" strategy find most of the functions. The "CamelCase"
@@ -60,18 +93,6 @@ python -m flashre naming ~/Projects/flashre/dumps/w-03/dump_w03-hw.bin --offset 
 
 ```
 python -m flashre naming ~/Projects/flashre/dumps/w-03/dump_w03-hw.bin --offset 0xC00000 --strategy camelcase
-```
-
-## Hints
-
-The goal is to understand functions purposes based on the string that they
-manipulate. Somehow, it is a generic version of the auto-naming strategies.
-Decompiling the whole binary with r2m2 being too slow, this command relies on
-objdump output.
-
-```
-grep mov dump.binary.objdump > movs.txt
-python -m flashre.main hints ~/Projects/flashre/dumps/w-03/dump_w03-hw.bin movs.txt --offset 0xC00000
 ```
 
 ## Update
