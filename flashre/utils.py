@@ -132,19 +132,19 @@ def is_camelcase_str(string):
 
     # Look for two uppercase characters
     uppers = [c for c in zip(string, xrange(len(string))) if c[0].isupper()]
-    if not uppers and len(string) < 2:
+    if len(uppers) < 2:
         return False
 
     # Check if they are followed by lowercase ones
     try:
-        before_char = string[uppers[0][1]+1]
-        after_char = string[uppers[0][1]+2]
-        if before_char.islower() and after_char.islower():
-            return True
+        for u in uppers:
+            after_char = string[u[1]+1]
+            if not after_char.islower():
+                return False
     except IndexError:
         return False
 
-    return False
+    return True
 
 
 def args_detect_int(i):

@@ -68,7 +68,7 @@ flashre hints dump.bin --offset 0xC00000 telnet
 
 The --reverse argument outputs strings manipulated by functions:
 ```
-flashre hints ../dumps/w-03/dump_w03-hw.bin  --offset 0xc00000 --reverse <(echo 0xc67c4a)
+flashre hints dump.bin  --offset 0xc00000 --reverse <(echo 0xc67c4a)
 0xc67c4a  0xccf586 ESC R4161 built 16:20:27, Oct  6 2014
 0xc67c4a  0xce4fec Welcome to FlashAir\x0d
 0xc67c4a  0xce5172 [TEL] (error) %s:%d
@@ -82,17 +82,30 @@ flashre hints ../dumps/w-03/dump_w03-hw.bin  --offset 0xc00000 --reverse <(echo 
 0xc67c4a  0xce51ba send(%d)
 ```
 
-## Naming strategies
+# naming
 
-In practice, the "error" strategy find most of the functions. The "CamelCase"
-one only finds few more functions, and some false positives.
-
-```
-python -m flashre naming ~/Projects/flashre/dumps/w-03/dump_w03-hw.bin --offset 0xC00000
-```
+Two auto-naming strategies are implemented.  In practice, the "error" strategy
+find most of the functions. The "CamelCase" one only finds few more functions,
+and some false positives.
 
 ```
-python -m flashre naming ~/Projects/flashre/dumps/w-03/dump_w03-hw.bin --offset 0xC00000 --strategy camelcase
+$ flashre naming --offset 0xc00000 dump.bin
+[..]
+af DP.dp_UpdateWinStart_O 0xcfac98
+af TEL.SendLoginMessage 0xc67c4a
+af WPS.WPS_SetSecInfo 0xc3959e
+af SDH.SD_HOST_TEST_Read 0xc9a78c
+af FAT.fat_remove_file 0xc2eac8
+```
+
+```
+$ flashre naming --offset 0xc00000 dump.bin --strategy camelcase
+[..]
+af SendDeauthMessageToAP 0xc393d4
+af InitializeWPS 0xc80624
+af WaitForTermination 0xc8019e
+af CntMeasure_Timeout_Frmblk 0xc97848
+af WlanWpsPin 0xc31242
 ```
 
 ## Update

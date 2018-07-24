@@ -67,7 +67,8 @@ class Naming(object):
 
         # Assemble a MOV that uses this address
         mode = rfb.machine.dis_engine().attrib
-        instr = rfb.mn.fromstring("MOVU %s, 0x%x" % (reg, address + rfb.offset), mode)
+        addr = address + rfb.offset
+        instr = rfb.mn.fromstring("MOVU %s, 0x%x" % (reg, addr), mode)
         # Discard candidates that does not encode the register on 3 bits
         candidates = rfb.mn.asm(instr, mode)
         targets = [(x.encode("hex"), str(rfb.mn.dis(x, mode))) for x in candidates
@@ -100,7 +101,8 @@ class Naming(object):
                 continue
 
             # Get the closest candidate
-            fname_addr = sorted([(int(offset)-p, p) for p in rfb.prologues() if p < int(offset)])
+            fname_addr = sorted([(int(offset)-p, p) for p in rfb.prologues()
+                                 if p < int(offset)])
             if not len(fname_addr):
                 continue
             faddresses.add(fname_addr[0][1])
@@ -133,7 +135,7 @@ class NamingError(Naming):
         """
         Assemble MOV instructions that are using the string address.
 
-        Based on observations, they are "MOVU R1, <ADDRESS>" with a 24 bytes
+        Based on observations, they are "MOVU R1, <ADDRESS>" with a 24 bits
         immediate aka Major Opcode #13 MOVU.
         """
 
@@ -170,7 +172,8 @@ class NamingError(Naming):
         # Extract the immediate from the second instruction
         fname_str_addr = instructions[1]["opcode"].split(",")[1][0:]
         fname_str_addr = int(fname_str_addr, 16)
-        real_fname = "%s.%s" % (prefix, rfb.r2p.cmd("ps @ 0x%x" % fname_str_addr))
+        real_fname = "%s.%s" % (prefix,
+                                rfb.r2p.cmd("ps @ 0x%x" % fname_str_addr))
 
         return real_fname
 
@@ -185,7 +188,7 @@ class NamingCamelCase(Naming):
         """
         Discard useless strings.
         """
-        return not is_camelcase_str(string)
+        return is_camelcase_str(string) is False
 
     @classmethod
     def assemble_instructions(cls, rfb, address):
