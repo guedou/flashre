@@ -7,18 +7,18 @@ The main glue
 
 import argparse
 
-from flashre.dump import dump_register, dump_command
-from flashre.emulate import emulate_register, emulate_command
-from flashre.flags import flags_register, flags_command
-from flashre.hints import hints_register, hints_command
-from flashre.naming import naming_register, naming_command
-from flashre.strings import strings_register, strings_command
-from flashre.telnet import telnet_register, telnet_command
-from flashre.update import update_register, update_command
-from flashre.xref import xref_register, xref_command
+from flashre.dump import dump_register
+from flashre.emulate import emulate_register
+from flashre.flags import flags_register
+from flashre.hints import hints_register
+from flashre.naming import naming_register
+from flashre.strings import strings_register
+from flashre.telnet import telnet_register
+from flashre.update import update_register
+from flashre.xref import xref_register
 
 
-if __name__ == "__main__":
+def main(argv):
     # Allow sub-parsers
     parser = argparse.ArgumentParser(description="Toshiba Flashair RE tools")
     subparser = parser.add_subparsers()
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     telnet_register(subparser)
     update_register(subparser)
     xref_register(subparser)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     # Call the sub-command
     args.func(args)

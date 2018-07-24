@@ -1,0 +1,9 @@
+#!/usr/bin/env python2
+# Copyright (C) 2018 Guillaume Valadon <guillaume@valadon.net>
+
+import sys
+
+
+from flashre.main import main
+
+main(sys.argv[1:])

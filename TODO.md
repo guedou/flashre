@@ -1,5 +1,10 @@
 # Things todo, issues, improvements ...
 
+## Before BHUS
+
+- auto detect sub-commands
+- test requirements.txt
+
 ## Important
 
 - implement LDCB/STCB in sem.py, and emulate NMI.putchar_STCB(0x3F4) !
@@ -16,7 +21,6 @@
 
 ## misc ...
 
-- setup.py & requirements.txt (scapy, miasm, r2pipe)
 - fix offset related issues in cache files
 - add short CLI arguments
 - look for movs using r2 '/x' like done in reverse xref
