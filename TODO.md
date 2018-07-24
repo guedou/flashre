@@ -16,8 +16,6 @@
 
 ## misc ...
 
-- add short CLI arguments
-- look for movs using r2 '/x' like done in reverse xref
 - use the `nearest_prologues()` function
 - implement unit tests
 - implement a cache in .config/flashre/SHA256/

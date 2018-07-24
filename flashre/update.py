@@ -8,8 +8,8 @@ Manipulate FlashAir updates
 import os
 import sys
 
-from scapy.all import Packet, StrFixedLenField, StrFixedLenEnumField, XShortField, XIntField,\
-                      XByteField, LEIntField, raw
+from scapy.all import Packet, StrFixedLenField, StrFixedLenEnumField, \
+                      XShortField, XIntField, XByteField, LEIntField, raw
 
 
 # FlashAir update header definition
@@ -26,7 +26,7 @@ class FlashAirUpdateHeader(Packet):
                    XByteField("checksum", 0),
                    XByteField("unk3", 0),
                    LEIntField("length", 0),
-                  ]
+                   ]
 
 
 def checksum(data):
@@ -74,7 +74,8 @@ def fake_update(filename, fake_data_filename, header_type="BOOT"):
         f_obj = open(fake_data_filename, "rb")
         data = f_obj.read()
     except IOError:
-        print >> sys.stderr, "load_update(): can't open fake data '%s' ! " % fake_data_filename
+        msg = "load_update(): can't open fake data '%s' !"
+        print >> sys.stderr, msg % fake_data_filename
         return None
 
     # Build the header
@@ -85,7 +86,8 @@ def fake_update(filename, fake_data_filename, header_type="BOOT"):
 
     # Do not write to the file if it already exists
     if os.path.exists(filename):
-        print >> sys.stderr, "fake_upate(): '%s' already exists! Delete if needed." % filename
+        msg = "fake_upate(): '%s' already exists! Delete if needed."
+        print >> sys.stderr, msg % filename
         return None
 
     # Write the fake update to disk
@@ -104,7 +106,7 @@ def update_register(parser):
     new_parser.add_argument("--check", action='store_true', default=True,
                             help="display and check the header")
     new_parser.add_argument("--fake", help="build a fake update using the data from this file")
-    new_parser.add_argument("--type", help="fake update type", default="BOOT",
+    new_parser.add_argument("--type", help="fake update type", default="USRPRG",
                             choices=UPDATE_HEADER_TYPES)
     new_parser.add_argument("update_filename", help="FlashAir update filename")
     new_parser.set_defaults(func=update_command)

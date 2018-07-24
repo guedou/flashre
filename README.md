@@ -7,6 +7,8 @@ cards:
 - hints: identify functions that manipulates specific strings
 - naming: auto-name functions using error format strings 
 - xref: explore functions call-graph
+- update: display firmware update, and build fake ones
+
 
 ## Commands Examples
 
@@ -134,14 +136,32 @@ $ flashre xref --offset 0xC00000 dump.bin --reverse 0xc67c4a
 ['0xc6786a']
 ```
 
-## Update
+## update
 
 Verify an update checksum:
 ```
-python -m flashre.main update update.bin
+$ flashre update fwupdate.fbn
+###[ FlashAir Update Header ]### 
+  card      = 'FLASHAIR'
+  type      = 'MAIN2'
+  unk0      = '\x01\x02\x03\x04'
+  unk1      = 0x1c7e
+  unk2      = 0x1f00250f
+  checksum  = 0xc2
+  unk3      = 0x0
+  length    = 1047568
 ```
 
-Build a fake update:
+Build a fake update and verify the checksum:
 ```
-python -m flashre.main update fake.bin --fake <(echo ABC)
+$ flashre update fake_update.bin --fake <(echo -n ABC) --type RF
+###[ FlashAir Update Header ]### 
+  card      = 'FLASHAIR'
+  type      = 'RF'
+  unk0      = '\x01\x02\x03\x04'
+  unk1      = 0x0
+  unk2      = 0x0
+  checksum  = 0xc6
+  unk3      = 0x0
+  length    = 3
 ```
