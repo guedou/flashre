@@ -5,6 +5,8 @@ cards:
 - telnet: interact with the card
 - dump: get text dumps and convert them to binary
 - hints: identify functions that manipulates specific strings
+- naming: auto-name functions using error format strings 
+- xref: explore functions call-graph
 
 ## Commands Examples
 
@@ -106,6 +108,30 @@ af InitializeWPS 0xc80624
 af WaitForTermination 0xc8019e
 af CntMeasure_Timeout_Frmblk 0xc97848
 af WlanWpsPin 0xc31242
+```
+
+### xref
+
+This commands helps exploring functions by printing their call-graph:
+```
+$ flashre xref --offset 0xC00000 dump.bin 0xc67c4a
+0xc67c4a,0xc7fb84,0xc12a8e,0xc7512e,0xc67bfa,0xc7517a,0xc12abe
+0xc7fb84
+0xc12a8e,0xc35960
+0xc7512e,0xc12a8e
+0xc67bfa,0xc7517a,0xc12a8e,0xc7512e
+0xc7517a,0xc12a8e
+0xc12abe,0xc35960
+0xc35960,0xc47700,0xc36344,0xc79cc8,0xc362aa,0xc7fb84,0xc8083c
+0xc7517a,0xc12a8e
+[..]
+```
+
+The --reverse argument return the functions that are calling the function given
+as a parameter:
+```
+$ flashre xref --offset 0xC00000 dump.bin --reverse 0xc67c4a
+['0xc6786a']
 ```
 
 ## Update

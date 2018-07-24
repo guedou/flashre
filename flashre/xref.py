@@ -1,7 +1,7 @@
 # Copyright (C) 2018 Guillaume Valadon <guillaume@valadon.net>
 
 """
-Explore the calls graph
+Explore call graphs
 """
 
 
@@ -21,7 +21,7 @@ def callgraph(rfb, address):
     rfb.r2p.cmd("af 0x%x" % address)
     calls = rfb.r2p.cmd("afx 0x%x" % address)
 
-    # afxj is not implemented, the output must be parsed manually
+    # Note: afxj is not implemented, the output must be parsed manually
     called = list()
     if calls:
         for line in calls.split('\n'):
@@ -40,7 +40,10 @@ def dump_functions(rfb, address):
     """
 
     done = set()
-    addresses = [address]
+    if type(address) is list:
+        addresses = address
+    else:
+        addresses = [address]
     while addresses:
 
         tmp = addresses.pop(0)
@@ -48,12 +51,13 @@ def dump_functions(rfb, address):
         addresses += [f for f in ret if f not in done]
         done.add(tmp)
 
-        print hex(tmp), "->", [hex(f) for f in ret]
+        print ",".join([hex(tmp)] + [hex(f) for f in ret])
     return done
 
 
 # Ease implementing the reverse callgraph detection logic
 BSR = collections.namedtuple("BSR", ["pattern", "verify"])
+
 
 def _verify_bsr12(address, r2_hit):
     """
@@ -67,7 +71,7 @@ def _verify_bsr12(address, r2_hit):
 
     # Check the encoded immediate
     value = int(r2_hit["data"], 16)
-    if (((value & 0xF) << 8) + (value >>8)-1) != imm:
+    if (((value & 0xF) << 8) + (value >> 8) - 1) != imm:
         return False
 
     return True
@@ -88,7 +92,7 @@ def _verify_bsr24(address, r2_hit):
     value = int(r2_hit["data"], 16)
 
     tmp = (value & 0xFF) << 16
-    tmp += ((value & 0xFF00)>> 8) << 8
+    tmp += ((value & 0xFF00) >> 8) << 8
     inverted_bytes = ((value >> 24) & 0xFF) + ((value >> 8) & 0xFF00)
     tmp += ((inverted_bytes >> 4) & 0x7F) << 1
 
@@ -110,7 +114,6 @@ def reverse_callgraph(rfb, address):
     Note: this function does not detect JMP based calls that occur sometimes.
     """
 
-
     callers = list()
     for bsr in [BSR12, BSR24]:
         for hit in rfb.r2p.cmdj("/xj %s" % bsr.pattern):
@@ -123,7 +126,7 @@ def reverse_callgraph(rfb, address):
                 continue
 
             # Extract the caller address
-            for instr in rfb.r2p.cmdj("pdj 1 @ %s" %  hit["offset"]):
+            for instr in rfb.r2p.cmdj("pdj 1 @ %s" % hit["offset"]):
                 if instr["jump"] == address:
                     callers.append(rfb.nearest_prologue(instr["offset"]))
 
@@ -138,9 +141,11 @@ def xref_register(parser):
     new_parser = parser.add_parser("xref", help="Explore the calls graph")
     new_parser.add_argument("--offset", type=args_detect_int, default=0,
                             help="map file at given address")
-    new_parser.add_argument("--reverse", action='store_true', default=False, help="find callers")
+    new_parser.add_argument("--reverse", action='store_true', default=False,
+                            help="find callers")
     new_parser.add_argument("binary_filename", help="flashair binary filename")
-    new_parser.add_argument("address", type=args_detect_int, help="find xref from this address")
+    new_parser.add_argument("address", type=args_detect_int,
+                            help="find xref from this address or file")
     new_parser.set_defaults(func=xref_command)
 
 
@@ -154,6 +159,6 @@ def xref_command(args):
 
     # Print xrefs
     if args.reverse:
-        print [hex(f) for f in reverse_callgraph(rfb, args.address)]
+        print '\n'.join([hex(f) for f in reverse_callgraph(rfb, args.address)])
     else:
         dump_functions(rfb, args.address)
