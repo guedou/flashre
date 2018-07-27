@@ -69,7 +69,7 @@ def dump_command(args):
 
     if args.convert:
         binary = convert_dump(args.filename)
-        print binary
+        sys.stdout.write(binary)
 
     else:
 
@@ -85,7 +85,7 @@ def dump_command(args):
             sys.exit()
 
         fat = FlashAirTelnet(args.target)
-        for address in xrange(args.begin, args.end, 0x184):
+        for address in xrange(args.begin, args.end, 0x180):
             # Dont dump over args.end
             offset = args.end - address
             if offset > 0x180:
