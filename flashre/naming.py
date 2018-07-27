@@ -69,6 +69,7 @@ class Naming(object):
         mode = rfb.machine.dis_engine().attrib
         addr = address + rfb.offset
         instr = rfb.mn.fromstring("MOVU %s, 0x%x" % (reg, addr), mode)
+        instr.mode = mode
         # Discard candidates that does not encode the register on 3 bits
         candidates = rfb.mn.asm(instr, mode)
         targets = [(x.encode("hex"), str(rfb.mn.dis(x, mode))) for x in candidates
