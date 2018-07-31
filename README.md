@@ -2,12 +2,26 @@
 
 This repository contains a set of tools that ease reversing the Toshiba FlashAir
 cards:
-- telnet: interact with the card
-- dump: get text dumps and convert them to binary
-- hints: identify functions that manipulates specific strings
-- naming: auto-name functions using error format strings 
-- xref: explore functions call-graph
-- update: display firmware update, and build fake ones
+- `telnet`: interact with the card
+- `dump`: get text dumps and convert them to binary
+- `hints`: identify functions that manipulates specific strings
+- `naming`: auto-name functions using error format strings 
+- `xref`: explore functions call-graph
+- `update`: display firmware update, and build fake ones
+
+Some real usages are presented in the BlackHat USA 2018 briefing named
+[Reversing a Japanese Wireless SD Card - From Zero to Code
+Execution](https://www.blackhat.com/us-18/briefings.html#reversing-a-japanese-wireless-sd-card-from-zero-to-code-execution).
+
+
+## Installing flashre
+
+flashre can easily be installed using the following commands. It is however
+recommended to use a [virtualenv](https://virtualenv.pypa.io/).
+```
+pip install -r requirements.txt
+python setup.py install
+```
 
 
 ## Commands Examples

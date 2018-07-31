@@ -1,5 +1,5 @@
 scapy==2.4.0
 r2pipe==0.9.1
-#git+https://github.com/cea-sec/miasm@master
-#git+https://github.com/serpilliere/elfesteem@master
+git+https://github.com/cea-sec/miasm@master
+git+https://github.com/serpilliere/elfesteem@master
 pyparsing==2.2.0
