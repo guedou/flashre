@@ -47,7 +47,7 @@ def emulate_command(args):
     jitter.vm.add_memory_page(0, PAGE_READ | PAGE_WRITE, asm)
     jitter.cpu.LP = 0x2807
 
-    jitter.vm.set_mem(0x2807, "Hello MeP!\x00")
+    jitter.vm.add_memory_page(0x2807, PAGE_READ | PAGE_WRITE, "Hello MeP!\x00")
     jitter.cpu.R1 = 0x2807
 
     jitter.add_breakpoint(jitter.cpu.LP, lambda x: False)

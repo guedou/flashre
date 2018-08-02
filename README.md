@@ -1,5 +1,8 @@
 # FlashRE tools
 
+[![GitHub tag](https://img.shields.io/github/tag/guedou/flashre.svg)](https://github.com/guedou/flashre/releases)
+[![Twitter Follow](https://img.shields.io/twitter/follow/guedou.svg?style=social)](https://twitter.com/intent/follow?screen_name=guedou)
+
 This repository contains a set of tools that ease reversing the Toshiba FlashAir
 cards:
 - `telnet`: interact with the card
@@ -23,6 +26,37 @@ pip install -r requirements.txt
 python setup.py install
 ```
 
+## Docker
+
+A [Docker](https://www.docker.com/) image is provided to ease using flashre. It
+is based on the [guedou/r2m2](https://github.com/guedou/r2m2) image and contains
+useful tools such as
+[radare2](https://github.com/radare/radare2),[miasm2](https://github.com/cea-sec/miasm),
+[binutils](https://www.gnu.org/software/binutils/) with MeP support, and
+[Sibyl](https://github.com/cea-sec/Sibyl).
+
+This image is built on [Docker Hub](https://hub.docker.com) and can easily be
+pulled as follows:
+
+```
+flashre$ docker pull guedou/flashre
+
+flashre$ $ docker run --rm -it -v $PWD:/data guedou/flashre flashre hints --offset 0xc00000 /data/dump_w03.bin update
+0xc20580 0xc20c82 update -f %s
+====
+0xc3335a 0xc33478 propertyupdate
+====
+0xc96870 0xc969c6 FwUpdate error f_open(%s) ret=%d\n
+0xc96870 0xc96a36 \nUpdate fail. Unexpected target name.\n
+0xc96870 0xc96b3e \nUpdate reserved.\n
+====
+0xc9b502 0xc9b51a USAGE: sd update filename
+0xc9b502 0xc9b65a \nUpdate fail. Unexpected target name.\n
+0xc9b502 0xc9b722 \nUpdate success.\n
+0xc9b502 0xc9b780 Update error.(checksum)\n
+====
+0xcfac98 0xcfacb4 dp_UpdateWinStart_O
+```
 
 ## Commands Examples
 

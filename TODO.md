@@ -1,25 +1,11 @@
 # Things todo, issues, improvements ...
 
-## Before BHUS
+## Improvements
 
-- auto detect sub-commands
-- test requirements.txt
-- test "flashre emulate strlen.bin"
-- use a cache per binary
-
-## Important
-
-- implement LDCB/STCB in sem.py, and emulate NMI.putchar_STCB(0x3F4) !
-- add JSR based function calls to get_prologue()
-
-## misc ...
-
-- use the `nearest_prologues()` function
-- implement unit tests
-- implement a cache in .config/flashre/SHA256/
+- add JSR based function calls to `get_prologue()`
+- implement a cache per binary in .config/flashre/
   interact with a global config: binary filename, flush, ...
-- telnet: port the watchdog for full memory dumps
-  => use radare2 2.6.0
+- telnet: implement a watchdog for full memory dumps
 
 ## radare2
 
