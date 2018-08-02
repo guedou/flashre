@@ -1,6 +1,7 @@
 # FlashRE tools
 
 [![GitHub tag](https://img.shields.io/github/tag/guedou/flashre.svg)](https://github.com/guedou/flashre/releases)
+[![Docker Automated buil](https://img.shields.io/docker/automated/guedou/flashre.svg)](https://hub.docker.com/r/guedou/flashre/)
 [![Twitter Follow](https://img.shields.io/twitter/follow/guedou.svg?style=social)](https://twitter.com/intent/follow?screen_name=guedou)
 
 This repository contains a set of tools that ease reversing the Toshiba FlashAir
@@ -30,10 +31,7 @@ python setup.py install
 
 A [Docker](https://www.docker.com/) image is provided to ease using flashre. It
 is based on the [guedou/r2m2](https://github.com/guedou/r2m2) image and contains
-useful tools such as
-[radare2](https://github.com/radare/radare2),[miasm2](https://github.com/cea-sec/miasm),
-[binutils](https://www.gnu.org/software/binutils/) with MeP support, and
-[Sibyl](https://github.com/cea-sec/Sibyl).
+useful tools such as [radare2](https://github.com/radare/radare2), [miasm2](https://github.com/cea-sec/miasm), [binutils](https://www.gnu.org/software/binutils/) with MeP support, and [Sibyl](https://github.com/cea-sec/Sibyl).
 
 This image is built on [Docker Hub](https://hub.docker.com) and can easily be
 pulled as follows:
