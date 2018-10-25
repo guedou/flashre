@@ -61,7 +61,7 @@ def get_strings(r2p):
     Return all strings in the binary and their offsets.
     """
 
-    ret = r2p.cmdj("izzj")["strings"]
+    ret = r2p.cmdj("izzj")
     return [(s["paddr"], s["string"].decode("base64")) for s in ret]
 
 
