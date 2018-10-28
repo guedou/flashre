@@ -107,13 +107,14 @@ manipulate. Somehow, it is a generic version of the auto-naming strategies.
 
 ```
 flashre hints dump.bin --offset 0xC00000 telnet
-0xc11a68 0xc11aa2 SD_WLAN/WELCOME.HTM
-0xc11a68 0xc11aae /SD_WLAN/WELCOME.HTM
-0xc11a68 0xc11abe 1:/WELCOME.HTM
-0xc11a68 0xc11ac8 1:/WELCOME.HTM
+0xc15f4e 0xc16c04 TELNET
 ====
-0xc67c4a 0xc67c6a Welcome to FlashAir\r\n
-0xc67c4a 0xc67cac Welcome to FlashAir\r\n
+0xc6784c 0xc67852 TELNET start\n
+====
+0xc67936 0xc6794c telnet terminate\n
+====
+0xc7fa92 0xc7fb18 TELNET_CreateResHistory
+====
 ```
 
 The --reverse argument outputs strings manipulated by functions:
@@ -179,7 +180,7 @@ The --reverse argument return the functions that are calling the function given
 as a parameter:
 ```
 $ flashre xref --offset 0xC00000 dump.bin --reverse 0xc67c4a
-['0xc6786a']
+0xc6786a
 ```
 
 ### update
