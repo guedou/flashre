@@ -13,6 +13,15 @@ cards:
 - `xref`: explore functions call-graph
 - `update`: display firmware update, and build fake ones
 
+The radare2 IO plugin located in `tools/` ease interacting with the card:
+```
+r2 -i flashair-io.py -qc 'e asm.arch=r2m2 ; o flashair:// ; px 16 ; pd 2' --
+- offset -   0 1  2 3  4 5  6 7  8 9  A B  C D  E F  0123456789ABCDEF
+0x00000000  08d8 0100 18df 0800 0000 0000 0000 0000  ................
+        ,=< 0x00000000      08d80100       JMP 0x100
+       ,==< 0x00000004      18df0800       JMP 0x8E2
+```
+
 Some real usages are presented in the BlackHat USA 2018 briefing named
 [Reversing a Japanese Wireless SD Card - From Zero to Code
 Execution](https://www.blackhat.com/us-18/briefings.html#reversing-a-japanese-wireless-sd-card-from-zero-to-code-execution).
