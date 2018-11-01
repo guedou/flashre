@@ -44,9 +44,11 @@ def dump_functions(rfb, address):
         addresses = address
     else:
         addresses = [address]
-    while addresses:
 
+    while addresses:
         tmp = addresses.pop(0)
+        if tmp in done:
+            continue
         ret = set(callgraph(rfb, tmp))
         addresses += [f for f in ret if f not in done]
         done.add(tmp)
