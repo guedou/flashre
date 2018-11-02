@@ -5,8 +5,8 @@
 flashair IO plugin - ease interacting with the Toshiba FlashAir SD card
 
 Note: it could be used as follows:
-    $ r2pm install lang-python
-    $ r2 -i r2bindings-flashair_io.py -qc 'o flashair://' --
+    $ r2pm install lang-python2
+    $ r2 -i flashair-io.py -qc 'o flashair://' --
 """
 
 

@@ -15,6 +15,7 @@ cards:
 
 The radare2 IO plugin located in `tools/` ease interacting with the card:
 ```
+export R2M2_ARCH=mepl
 r2 -i flashair-io.py -qc 'e asm.arch=r2m2 ; o flashair:// ; px 16 ; pd 2' --
 - offset -   0 1  2 3  4 5  6 7  8 9  A B  C D  E F  0123456789ABCDEF
 0x00000000  08d8 0100 18df 0800 0000 0000 0000 0000  ................
