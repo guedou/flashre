@@ -6,7 +6,7 @@ flashair IO plugin - ease interacting with the Toshiba FlashAir SD card
 
 Note: it could be used as follows:
     $ r2pm install lang-python2
-    $ r2 -i flashair-io.py -qc 'o flashair://' --
+    $ r2 -i io_flashair.py -qc 'o flashair://' --
 """
 
 
@@ -75,11 +75,16 @@ def flashair_read(offset, size):
     try:
         # Dump bytes
         data = ""
+
+        # Limit to 2048 bytes as dumping is slow
+        if size >= 2048:
+            size = 2048
+
         if size <= 0x180:
             data = FAT.single_command("dump 0x%x -l %d" % (offset, size))
         else:
             for address in xrange(offset, offset+size, 0x180):
-                data = FAT.single_command("dump 0x%x -l %d" % (address, size))
+                data += FAT.single_command("dump 0x%x -l 0x180" % address)
 
         # Convert hex bytes to binary
         _, fname = tempfile.mkstemp()
@@ -104,6 +109,7 @@ def flashair_io_plugin(a):
             "open": flashair_open,
             "seek": flashair_seek,
             "read": flashair_read}
+
 
 # Register the IO plugin
 r2lang.plugin("io", flashair_io_plugin)
