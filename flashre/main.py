@@ -6,6 +6,7 @@ The main glue
 
 
 import argparse
+import sys
 
 from flashre.dump import dump_register
 from flashre.emulate import emulate_register
@@ -33,6 +34,13 @@ def main(argv):
     telnet_register(subparser)
     update_register(subparser)
     xref_register(subparser)
+
+    # Print the Help message when no arguments are provided
+    if not argv:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
+
+    # Parse the arguments
     args = parser.parse_args(argv)
 
     # Call the sub-command
