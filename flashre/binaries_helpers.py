@@ -52,3 +52,12 @@ class ReverseFlashairBinary(object):
         if len(prologues):
             return prologues[0][1]
         return prologues
+
+    def assemble(self, instruction, ):
+        """
+        Assemble one instructtion with miasm2
+        """
+        mode = self.machine.dis_engine().attrib
+        instr = self.mn.fromstring(instruction, mode)
+        instr.mode = mode
+        return self.mn.asm(instr, mode)
