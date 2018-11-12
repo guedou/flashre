@@ -12,6 +12,7 @@ cards:
 - `naming`: auto-name functions using error format strings 
 - `xref`: explore functions call-graph
 - `update`: display firmware update, and build fake ones
+- `demo`: build a simple payload for demonstrations
 
 The radare2 IO plugin located in `tools/` ease interacting with the card:
 ```
@@ -221,4 +222,12 @@ $ flashre update fake_update.bin --fake <(echo -n ABC) --type RF
   checksum  = 0xc6
   unk3      = 0x0
   length    = 3
+```
+
+## demo
+
+The `fwupdate.fbn` is used to automatically extract the address of the `printf()`
+function:
+```
+flashre demo fwupdate.fbn > calc.bin
 ```

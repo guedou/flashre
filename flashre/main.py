@@ -8,6 +8,7 @@ The main glue
 import argparse
 import sys
 
+from flashre.demo import demo_register
 from flashre.dump import dump_register
 from flashre.emulate import emulate_register
 from flashre.flags import flags_register
@@ -25,6 +26,7 @@ def main(argv):
     subparser = parser.add_subparsers()
 
     # Register sub-commands
+    demo_register(subparser)
     dump_register(subparser)
     emulate_register(subparser)
     flags_register(subparser)
