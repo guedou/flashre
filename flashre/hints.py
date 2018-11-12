@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Guillaume Valadon <guillaume@valadon.net>
+# Copyright (C) 2018 Guillaume Valadon <guillaume@valadon.net>
 
 """
 Display strings used in functions
@@ -6,6 +6,8 @@ Display strings used in functions
 
 
 import json
+
+from miasm2.core.utils import Disasm_Exception
 
 from flashre.binaries_helpers import ReverseFlashairBinary
 from flashre.utils import args_detect_int, r2_search_memory
@@ -28,7 +30,10 @@ def load_hints(rfb, base_address, keyword):
                 # TODO: add when radare2 is fixed
                 binary = rfb.r2p.cmd("p8 4 @ %d" % addr)
                 mode = rfb.machine.dis_engine().attrib
-                instr = rfb.mn.dis(binary.decode("hex"), mode)
+                try:
+                    instr = rfb.mn.dis(binary.decode("hex"), mode)
+                except Disasm_Exception:
+                    continue
                 if not str(instr).startswith("MOVU"):
                     continue
                 hints[addr] = _str
