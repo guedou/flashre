@@ -6,6 +6,7 @@ Display strings used in functions
 
 
 import json
+import sys
 
 from miasm2.core.utils import Disasm_Exception
 
@@ -45,7 +46,11 @@ def reverse_hints(rfb, address):
     Identify strings used in functions
     """
     rfb.r2p.cmd("s %s; af " % address)
-    instructions = json.loads(rfb.r2p.cmd("pdj $FI"))
+    try:
+        instructions = json.loads(rfb.r2p.cmd("pdj $FI"))
+    except ValueError:
+        print >> sys.stderr, "No valid instructions found at %s" % address
+        instructions = list()
 
     for instr in instructions:
         if instr["opcode"].startswith("MOVU"):
